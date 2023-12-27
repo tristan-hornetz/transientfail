@@ -318,7 +318,7 @@ static int resolve_vm(size_t addr, vm_t* entry, int lock) {
   entry->valid |= PTEDIT_VALID_MASK_PMD;
 
   /* Map PTE (page table entry) */
-  entry->pte = pte_offset_map(entry->pmd, addr);
+  entry->pte = pte_offset_kernel(entry->pmd, addr);
   if (entry->pte == NULL || pmd_large(*(entry->pmd))) {
     entry->pte = NULL;
     goto error_out;
@@ -643,7 +643,7 @@ static int devmem_bypass(struct kretprobe_instance *p, struct pt_regs *regs) {
 static struct kretprobe probe_devmem = {.handler = devmem_bypass, .maxactive = 20};
 #endif
 
-int init_module(void) {
+int _init_module(void) {
   int r;
 
   /* Register device */
@@ -688,7 +688,7 @@ int init_module(void) {
   return 0;
 }
 
-void cleanup_module(void) {
+void _cleanup_module(void) {
   misc_deregister(&misc_dev);
   
 #if !defined(__aarch64__)
@@ -701,3 +701,6 @@ void cleanup_module(void) {
   }
   pr_info("Removed.\n");
 }
+
+module_init(_init_module);
+module_exit(_cleanup_module);

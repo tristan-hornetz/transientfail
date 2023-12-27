@@ -12,9 +12,6 @@
 #undef LINUX
 #endif
 
-
-#include <stddef.h>
-
 #if defined(LINUX)
 #define PTEDITOR_DEVICE_NAME "pteditor"
 #define PTEDITOR_DEVICE_PATH "/dev/" PTEDITOR_DEVICE_NAME

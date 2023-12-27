@@ -10,9 +10,7 @@ ifndef LFENCE
     LFENCE          = 0
 endif
 
-ifeq ($(M32),1)
-    CFLAGS          += -m32 -DM32=1
-endif
+CFLAGS          += -m32 -DM32=1
 
 ifeq ($(MPX),1)
     CFLAGS          += -mmpx -fcheck-pointer-bounds
